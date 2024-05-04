@@ -19,7 +19,6 @@ class BaseTableConfig(object):
     PARENT_DIR = THIS_DIR.parent
     # All available years
     YEAR_LIST = [
-        2022,
         2021,
         2020,
         2019,
