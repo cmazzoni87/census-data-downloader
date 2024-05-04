@@ -9,7 +9,7 @@ from census_data_downloader.core.decorators import register
 
 @register
 class InternetDownloader(BaseTableConfig):
-    YEAR_LIST = (2017,)
+    YEAR_LIST = (2021,)
     PROCESSED_TABLE_NAME = "internet"
     UNIVERSE = "households"
     RAW_TABLE_NAME = 'B28002'

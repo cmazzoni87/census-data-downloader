@@ -22,6 +22,7 @@ class BaseGeoTypeDownloader(object):
     Expects a TableConfig instance and year as input.
     """
     YEAR_LIST = [
+        2022,
         2021,
         2020,
         2019,
@@ -362,6 +363,7 @@ class CnectasDownloader(BaseGeoTypeDownloader):
     Download raw data at the combined New England city and town level.
     """
     YEAR_LIST = [
+        2022,
         2021,
         2020,
         2019,
@@ -404,6 +406,7 @@ class ZctasDownloader(BaseGeoTypeDownloader):
     Download raw data at the zipcode-tabulation-area level.
     """
     YEAR_LIST = [
+        2022,
         2021,
         2020,
         2019,

@@ -3,7 +3,6 @@ import unittest
 from unittest import mock
 from us import states
 import pandas as pd
-from pandas.util.testing import assert_series_equal
 import collections
 import census_data_downloader
 from census_data_downloader import tables
@@ -66,4 +65,6 @@ class CliTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    #  Set up census api key
+    census_data_downloader.api_key = "f6dede884157d0f93ee3f12abde3a05e1a62187d"
     unittest.main()
