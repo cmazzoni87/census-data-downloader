@@ -11,6 +11,11 @@ class EmploymentStatusDownloader(BaseTableConfig):
     UNIVERSE = "population 16 years and over"
     RAW_TABLE_NAME = 'B23025'
     YEAR_LIST = (
+        2022,
+        2021,
+        2020,
+        2019,
+        2018,
         2017,
         2016,
         2015,

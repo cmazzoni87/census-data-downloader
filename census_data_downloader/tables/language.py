@@ -7,7 +7,7 @@ from census_data_downloader.core.decorators import register
 
 @register
 class HouseholdLanguageDownloader(BaseTableConfig):
-    YEAR_LIST = (2017, 2016)
+    YEAR_LIST = (2022, 2021)
     PROCESSED_TABLE_NAME = 'householdlanguage'
     UNIVERSE = "households"
     RAW_TABLE_NAME = 'C16002'
@@ -49,7 +49,7 @@ class HouseholdLanguageDownloader(BaseTableConfig):
 
 @register
 class LanguageShortFormDownloader(BaseTableConfig):
-    YEAR_LIST = (2017, 2016)
+    YEAR_LIST = (2022, 2021)
     PROCESSED_TABLE_NAME = 'languageshortform'
     UNIVERSE = "population 5 years and over"
     RAW_TABLE_NAME = 'C16001'
@@ -127,7 +127,7 @@ class LanguageShortFormDownloader(BaseTableConfig):
 
 @register
 class LanguageLongFormDownloader(BaseTableConfig):
-    YEAR_LIST = (2017, 2016)
+    YEAR_LIST = (2022, 2021)
     GEOTYPE_LIST = ("nationwide", "states", "counties", "congressional_districts", "places")
     PROCESSED_TABLE_NAME = 'languagelongform'
     UNIVERSE = "population 5 years and over"
