@@ -21,14 +21,21 @@ def downloader(func):
     def inner(*args, **kwargs):
         # Grab the TableConfig
         table_config = args[0]
+        table_config.all_data = []
         # Grab the geotype downloader class by running the metaprogramming function
         downloader_klass = func(table_config)
         # For each year authorized on the config
         for year in table_config.years_to_download:
             # Create the geotype downloader instance
             downloader = downloader_klass(table_config, year)
+            # check if kwargs are passed
             # Download the raw data
-            downloader.download()
+            if kwargs:
+                downloader.download(kwargs)
+            else:
+                downloader.download()
+
             # Process the data
-            downloader.process()
+            processed_data = downloader.process()
+            table_config.all_data.append(processed_data)
     return inner

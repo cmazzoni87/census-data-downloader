@@ -22,6 +22,7 @@ class BaseGeoTypeDownloader(object):
     Expects a TableConfig instance and year as input.
     """
     YEAR_LIST = [
+        2022,
         2021,
         2021,
         2020,
@@ -115,13 +116,31 @@ class BaseGeoTypeDownloader(object):
                     field_map[full_raw_id] = processed_name
         return field_map
 
-    def get_raw_data(self):
+    def get_raw_data(self, optional_params=None):
         """
         Returns the data we want from the API.
         """
         logger.debug(f"Downloading {self.slug} {self.config.PROCESSED_TABLE_NAME} data from raw {self.config.RAW_TABLE_NAME} table in {self.year} {self.config.source} count")
+        call_params = self.api_filter
         # Get the raw data
-        return self.api.get(self.api_fields, self.api_filter)
+        if optional_params:
+            # change the optional_params one key is either 'county' or 'state'
+            if optional_params.get('counties'):
+                # get the data key as comma separated string
+                _counties = ','.join(optional_params.get('counties'))
+                try:
+                    _state = optional_params.get('state')
+                except KeyError:
+                    raise NotImplementedError("State is required when counties are provided")
+                _state = optional_params.get('state')
+                call_params = {'for': f'county:{_counties}', 'in': f'state:{_state}'}
+            elif optional_params.get('states'):
+                _states = ','.join(optional_params.get('states'))
+                call_params = {'for': f'states:{_states}'}
+            elif optional_params.get('uat'):
+                _uat = ','.join(optional_params.get('uat'))
+                call_params = {'for': f'urban area:{_uat}'}
+        return self.api.get(self.api_fields, call_params)
 
     def create_geoid(self, row):
         """
@@ -129,7 +148,7 @@ class BaseGeoTypeDownloader(object):
         """
         return row[self.raw_geotype]
 
-    def download(self):
+    def download(self, optional_params=None):
         """
         Downloads raw data from the Census API.
         Returns path to CSV.
@@ -140,7 +159,7 @@ class BaseGeoTypeDownloader(object):
             return self.raw_csv_path
 
         # Get the data
-        data = self.get_raw_data()
+        data = self.get_raw_data(optional_params)
 
         # Convert it to a dataframe
         df = pd.DataFrame.from_records(data)
@@ -153,7 +172,7 @@ class BaseGeoTypeDownloader(object):
         time.sleep(0.5)
 
         # Hand the path back
-        return self.raw_csv_path
+        return self.raw_csv_path, data
 
     def process(self):
         """
@@ -193,7 +212,7 @@ class BaseGeoTypeDownloader(object):
             index=True,
             encoding="utf-8"
         )
-        return self.processed_csv_path
+        return df
 
 
 class BaseStateLevelGeoTypeDownloader(BaseGeoTypeDownloader):
@@ -363,7 +382,7 @@ class CnectasDownloader(BaseGeoTypeDownloader):
     Download raw data at the combined New England city and town level.
     """
     YEAR_LIST = [
-        2021,
+        2022,
         2021,
         2020,
         2019,
